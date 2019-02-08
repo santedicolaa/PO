@@ -1,1 +1,17 @@
+def selectionSort(lista):
+  i = 0
+  while i < len(lista) - 1:
+    menor = i
+    j = i + 1
+    while j < len(lista):
+      if lista[j] < lista[menor]:
+        menor = j
 
+      j += 1
+    
+    if menor != i:
+      temp = lista[i]
+      lista[i] = lista[menor]
+      lista[menor] = temp
+
+    i += 1
