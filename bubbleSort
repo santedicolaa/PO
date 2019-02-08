@@ -1,0 +1,43 @@
+from random import randint
+import timeit
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+mpl.use('Agg')
+
+def geraLista(tam):
+    lista = []
+    for i in range(tam):
+        n = randint(1,1*tam)
+        if n not in lista: lista.append(n)
+    return lista
+
+def bubbleSort(lista):
+  swaps = 0
+  if len(lista)>1:
+    for j in range (0,len(lista)):
+      for i in range (0, len(lista)-1):
+        swaps+=1
+        if lista[i]>lista[i+1]:
+          lista[i], lista[i+1] = lista[i+1], lista[i]
+  return swaps
+
+def desenhaGrafico(x, y, name, xl = "Entradas", yl = "Saídas"):
+    fig = plt.figure(figsize=(10, 8))
+    ax = fig.add_subplot(111)
+    ax.plot(x,y, label = "Melhor Tempo")
+    ax.legend(bbox_to_anchor=(1, 1),bbox_transform=plt.gcf().transFigure)
+    plt.ylabel(yl)
+    plt.xlabel(xl)
+    fig.savefig(name)
+
+x = [10000, 20000, 30000, 40000, 50000]
+y1 = []
+y2 = []
+
+for i in range (len(x)):
+  lista = geraLista(x[i])
+  y1.append(timeit.timeit("bubbleSort({})".format(lista), setup="from __main__ import bubbleSort", number=1))
+  y2.append(bubbleSort(lista))
+
+desenhaGrafico(x, y1, "graph_time.png", yl = "Tempo (s)")
+desenhaGrafico(x, y2, "graph_swap.png", yl = "Número de comparações")
