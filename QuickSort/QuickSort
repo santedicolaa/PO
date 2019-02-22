@@ -1,0 +1,63 @@
+import random
+import timeit
+import sys
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+mpl.use('Agg')
+
+sys.setrecursionlimit(100000)
+
+def geraListaAle(tam):
+    lista = []
+    for i in range(tam):
+        lista.append(i)
+    random.shuffle(lista)
+    return lista
+
+def geraListaCre(tam):
+    lista = []
+    for i in range(tam):
+        lista.append(i)
+    return lista
+
+def geraListaDec(tam):
+    lista = []
+    n = tam
+    for i in range(tam):
+        lista.append(n)
+        n -=1
+    return lista
+
+def quickSort(lista):
+    if len(lista) <= 1:
+        return lista
+
+    chave = lista[0]
+    equal = [x for x in lista if x == chave]
+    lesser = [x for x in lista if x < chave]
+    greater = [x for x in lista if x > chave]
+    lisord = quickSort(lesser) + equal + quickSort(greater)
+    return lisord
+
+def desenhaGrafico(x, pc, mc, ae, name, xl = "Entradas", yl = "Tempo (s)"):
+    fig = plt.figure(figsize=(10, 8))
+    ax = fig.add_subplot(111)
+    ax.plot(x, pc, label = "Pior Caso")
+    ax.plot(x, mc, label="Melhor Caso")
+    ax.plot(x, ae, label="Aleatório")
+    ax.legend(bbox_to_anchor=(1, 1),bbox_transform=plt.gcf().transFigure)
+    plt.ylabel(yl)
+    plt.xlabel(xl)
+    fig.savefig(name)
+
+pior = []
+melhor = []
+aleatorio = []
+x = [100, 300, 500, 700, 900, 1000]
+
+for i in range(len(x)):
+    pior.append(timeit.timeit("quickSort({})".format(geraListaDec(x[i])), setup="from __main__ import quickSort", number=1))
+    melhor.append(timeit.timeit("quickSort({})".format(geraListaCre(x[i])), setup="from __main__ import quickSort", number=1))
+    aleatorio.append(timeit.timeit("quickSort({})".format(geraListaAle(x[i])), setup="from __main__ import quickSort", number=1))
+
+desenhaGrafico(x,pior,melhor,aleatorio,"graph_time.png")
