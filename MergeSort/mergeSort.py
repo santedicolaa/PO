@@ -93,10 +93,14 @@ desenhaGrafico(x, PiorCaso, MelhorCaso, CasoAle, "graph_time.png")
 lis = [1, 2, 3, 4, 5, 6]
 permut = list(it.permutations(lis,6))
 tempo = []
+listaok = []
 
 for i in permut:
-    tempo.append(timeit.timeit('ordenar({})'.format(permut),setup="from __main__ import ordenar",number=1))
+  listaok.append(list(i))
 
+for i in range(len(listaok)):
+    tempo.append(timeit.timeit('ordenar({})'.format(listaok[i]),setup="from __main__ import ordenar",number=1))
+    
 maior = tempo.index(max(tempo))
 menor = tempo.index(min(tempo))
 
