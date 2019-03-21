@@ -45,6 +45,7 @@ def countingSort(lista):
 
   for i in range(len(lista)): 
     resposta[numeros[lista[i]]-1] = lista[i]
+    numeros[lista[i]]-=1
 
   return resposta
 
